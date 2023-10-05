@@ -24,6 +24,7 @@ import { Button } from '@/components/ui/button';
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -35,6 +36,13 @@ const formSchema = z.object({
 });
 
 export const InitialModal = () => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, [])
+  
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,10 +57,14 @@ export const InitialModal = () => {
     console.log(values);
   };
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <Dialog open>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
-        <DialogHeader className="pt-8 px-4">
+        <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
             Customize your server
           </DialogTitle>
