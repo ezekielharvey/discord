@@ -39,7 +39,7 @@ model Server {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  member Member[]
+  members Member[]
   channels Channel[]
 
   @@index([profileId])
