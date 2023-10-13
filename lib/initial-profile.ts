@@ -26,4 +26,6 @@ export const initialProfile = async () => {
       email: user.emailAddresses[0].emailAddress,
     },
   });
+
+  return newProfile;
 };
