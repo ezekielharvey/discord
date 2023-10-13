@@ -25,7 +25,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
           createdAt: 'asc',
         },
       },
-      member: {
+      members: {
         include: {
           profile: true,
         },
@@ -45,7 +45,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const videoChannels = server?.channels.filter(
     channel => channel.type === ChannelType.VIDEO
   );
-  const members = server?.member.filter(
+  const members = server?.members.filter(
     member => member.profileId !== profile.id
   );
 
@@ -53,7 +53,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     return redirect('/');
   }
 
-  const role = server.member.find(
+  const role = server.members.find(
     member => member.profileId === profile.id
   )?.role;
 

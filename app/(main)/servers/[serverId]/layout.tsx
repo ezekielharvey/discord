@@ -21,7 +21,7 @@ const ServerIdLayout = async ({
   const server = await db.server.findUnique({
     where: {
       id: params.serverId,
-      member: {
+      members: {
         some: {
           profileId: profile.id
         }
