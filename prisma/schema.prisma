@@ -33,14 +33,14 @@ model Server {
   imageUrl String @db.Text
   inviteCode String @unique
 
-  profileId String 
+  profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 
   members Member[]
   channels Channel[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([profileId])
 }
@@ -55,14 +55,14 @@ model Member {
   id String @id @default(uuid())
   role MemberRole @default(GUEST)
 
-  profileId String 
+  profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  serverId String 
+  serverId String
   server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   messages Message[]
-  directMessage DirectMessage[]
+  directMessages DirectMessage[]
 
   conversationsInitiated Conversation[] @relation("MemberOne")
   conversationsReceived Conversation[] @relation("MemberTwo")
@@ -85,10 +85,10 @@ model Channel {
   name String
   type ChannelType @default(TEXT)
 
-  profileId String 
+  profileId String
   profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  serverId String 
+  serverId String
   server Server @relation(fields: [serverId], references: [id], onDelete: Cascade)
 
   messages Message[]
@@ -126,7 +126,7 @@ model Conversation {
 
   memberOneId String
   memberOne Member @relation("MemberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
-  
+
   memberTwoId String
   memberTwo Member @relation("MemberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
 
@@ -134,13 +134,13 @@ model Conversation {
 
   @@index([memberTwoId])
 
-  @@index([memberOneId, memberTwoId])
+  @@unique([memberOneId, memberTwoId])
 }
 
 model DirectMessage {
   id String @id @default(uuid())
   content String @db.Text
-  fileUrl String @db.Text
+  fileUrl String? @db.Text
 
   memberId String
   member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
@@ -155,5 +155,4 @@ model DirectMessage {
 
   @@index([memberId])
   @@index([conversationId])
-
 }
