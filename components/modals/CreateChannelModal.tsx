@@ -62,7 +62,7 @@ export const CreateChannelModal = () => {
     },
   });
 
-  useEffect (() => {
+  useEffect(() => {
     if (channelType) {
       form.setValue("type", channelType)
     } else {
