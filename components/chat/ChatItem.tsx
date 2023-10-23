@@ -15,6 +15,7 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '../ui/button';
 import qs from 'query-string';
+import { useModal } from '@/hooks/useModalStore';
 
 interface ChatItemProps {
   id: string;
@@ -54,7 +55,7 @@ export const ChatItem = ({
   socketQuery,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { onOpen } = useModal();
 
   useEffect(() => {
     const handleKeyDown = (event: any) => {
@@ -81,14 +82,14 @@ export const ChatItem = ({
     try {
       const url = qs.stringifyUrl({
         url: `${socketUrl}/${id}`,
-        query: socketQuery
-      })
+        query: socketQuery,
+      });
 
-      await axios.patch(url, values)
+      await axios.patch(url, values);
       form.reset();
       setIsEditing(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -218,7 +219,15 @@ export const ChatItem = ({
             </ActionTooltip>
           )}
           <ActionTooltip label="Delete">
-            <Trash className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-rose-500 transition" />
+            <Trash
+              onClick={() =>
+                onOpen('deleteMessage', {
+                  apiUrl: `${socketUrl}/${id}`,
+                  query: socketQuery,
+                })
+              }
+              className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-rose-500 transition"
+            />
           </ActionTooltip>
         </div>
       )}
